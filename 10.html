@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>輪講</title>
+
+
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			.reveal h1,
+			.reveal h2,
+			.reveal h3,
+			.reveal h4,
+			.reveal h5,
+			.reveal h6 {
+			text-transform: none;
+			}
+			/*http://mitsuakikawamorita.com/blog/?p=1599*/
+			footer{
+        clear:both;
+        font-size:20px;
+        /*color: ;*/
+        height:75px;
+        display:block;
+        position:absolute;
+        bottom:0;
+        width: 100%;
+        }
+ 		small.smalltxt{
+			 vertical-align:middle;
+		 }
+        footer div{
+        margin:0 auto;
+        text-align: center;
+        }
+		.present img{
+			max-height: 500px;
+		}
+	#sv_tbl{
+		font-size:0.8em;
+	}
+
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+$$
+\newcommand{\bra}[1]{\left\langle #1 \right|}
+\newcommand{\ket}[1]{\left|#1 \right\rangle}
+\newcommand{\bracket}[2]{\left\langle #1 \middle|#2 \right\rangle}
+
+$$
+					
+			
+				<section>
+
+					<h2>§10 Order finding</h2>
+					<p>このページは<a href="https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/all.pdf">Introduction to Quantum Computing</a>の輪講のための資料です。</p>
+					<ol>
+						<li>Order findingとは
+
+						</li>
+						<li>Order findingを位相推定で解く</li>
+					</ol>
+				</section>
+				<section>
+					<section>
+						<h3>10.1 Order finding とは</h3>
+						<p>まずいくつか表記法を説明します。</p>
+					</section>
+					<section>
+						<h3>整数の合同</h3>
+						<ul style="list-style:none;">
+							<li>※\(a,b,N\in\mathbb{Z}, N \geq 1 \)</li> 
+							<li>\( a \equiv b \pmod{N} \)</li>
+							<li>\(\Leftrightarrow  N|(a-b) \)</li>
+							<li>\( \Leftrightarrow Nは(a-b)の約数である \)</li>
+							<li>\( \Leftrightarrow a-b = kN ,k\in\mathbb{Z}\)</li>
+							<li>\( \Leftrightarrow a \bmod N = b \bmod N\)</li>
+						</ul>
+					</section>
+					<section>
+						<ul >
+							<li>\(\mathbb{Z}_N=\{0,...,N-1\}\)
+								<ul>
+									<li>環<small class="smalltxt">（加法と乗法ができる）</small>でありNが素数の時は体<small class="smalltxt">（四則演算ができる）</small></li>
+								</ul>
+							</li>
+							<li>\(\mathbb{Z}^{*}_N=\{a\in\mathbb{Z}:\gcd(a,N)=1\}\)
+								<ul >
+									<li>e.g. <small class="smalltxt">\(\mathbb{Z}^{*}_{35}=\{1,2,3,4,6,8,9,11,12,13,16,17,18,19,22,23,24,26,27,29,31,32,33,34\}\)</small></li>
+									<li>Nを法とする乗法群になっている。</li>
+									<li>群Gの公理:(閉じている・結合則・単位元・逆元)</li>
+								</ul>
+							</li>
+							<li>オイラーの<ruby><rb>φ</rb><rt>ファイ/トーシェント</rt></ruby>関数：\(\phi(N)=|\mathbb{Z}_N|=\mathbb{Z}^{*}_Nの要素数\)
+							<ul><li>e.g. \(\phi(35)=24\)</li></ul></li>
+							<li>群とかの<a href="http://f.hatena.ne.jp/Zellij/20121211230653">参考</a></li>
+						</ul>
+					</section>
+					<section>
+						<p>\(\forall a\in\mathbb{Z}^*_N, \exists!b \in\mathbb{Z}^*_N,ab\equiv 1\pmod{N}\)</p>
+						<ul >
+							<li>\(1\equiv a^{\phi(m)}=a\times a^{\phi(m)-1}\)（オイラーの定理より）</li>
+							<li>\(b=a^{-1}\pmod{N} \)と書く</li>
+							
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>\(a\in\mathbb{Z}^*_N,a^r \equiv 1 \)をみたす、<br>最小のrを\(\mathbb{Z}^*_N\)におけるaのorderと言う。</li>
+							<li>\( a^{\phi(N)} \equiv 1\)より、rは定義可能である。</li>
+							<li>e.g.<ul>
+								<li>\(\gcd(4,35)=1,4\in\mathbb{Z}^*_{35}\)</li>
+								<li>\(4^1\equiv 4, 4^2\equiv 16, 4^3\equiv29, 4^4\equiv11, 4^5\equiv9, 4^6\equiv1 \)</li>
+								<li>35を法とした4のorderは6である。</li>
+								<li>\(\phi(35)=24=6n\)</li>
+								</ul></li>
+						</ul>
+					</section>
+					<section>
+						<h3>Order findingとは</h3>
+						<table><tbody>
+							<tr><td>Input</td><td>\(N\geq 2,a\in\mathbb{Z}^*_N\)</td><td>\(N=35,a=4\)</td></tr>
+							<tr><td>Output</td><td>\(\mathbb{Z}^*_N\)におけるaのorder</td><td>\(6\)</td></tr>
+						</tbody></table>
+
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>10.2 Order findingを位相推定で解く</h3>
+						
+					</section>
+					<section>
+						<h3>\(M_a\)変換</h3>
+						<ul>
+							<li>aを乗ずる演算</li>
+							<li>\(N\geq 2,a \in \mathbb{Z}^*_N,x \in \mathbb{Z}_N,n=\lfloor \log_2(N-1) \rfloor +1\)</li>
+							<li>\(M_a\ket{x} = 
+									\begin{cases}
+										\ket{ax\pmod{N}} & (0 \leq x < N )\\
+										\ket{x} & (N\leq x  < 2^n)
+									\end{cases}
+								\) と定義
+							</li>
+							<li>可逆、つまりユニタリ
+								<ul>
+									<li>\(M_{a^{-1}}M_a=I\)</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>\(M_a\)変換を位相推定に</h3>
+						<ul>
+							<li>\(\Lambda_m(M_a)\ket{k}\ket{x} = \ket{k}\ket{a^kx\pmod{N}} \)(mは精度)
+								<ul><li>
+									<small class="smalltxt">参考:\(\Lambda_m(U)\ket{k}\ket{\phi} =\ket{k} (U^k\ket{\phi})\)</small>
+									</li>
+								</ul>
+							</li>
+							<li>\(\ket{\psi_0} = \frac{1}{\sqrt{r}}(\ket{1} + \ket{a} + \ket{a^2} + \cdots + \ket{a^{r-1}})\)
+								<ul>
+									<li><small class="smalltxt">
+									\(M_a\ket{\psi_0}= \ket{\psi_0}
+									\)</small>
+									</li>
+									<li>
+										固有値は1
+									</li>
+								</ul>
+							</li>
+							<li>\(\ket{\psi_1} = \frac{1}{\sqrt{r}}(\ket{1} + \omega_r^{-1}\ket{a} + \omega_r^{-2}\ket{a^2} + \cdots + \omega_r^{-(r-1)}\ket{a^{r-1}})\)
+								<ul>
+									<li><small class="smalltxt">
+									\(M_a\ket{\psi_1} = \omega_r\ket{\psi_1}
+									\)</small>
+									</li>
+									<li>
+										固有値は\(\omega_r, \omega_r=e^{2\pi i/r}\)
+									</li>
+								</ul>
+							</li>
+							<li>\(\ket{\psi_j} = \frac{1}{\sqrt{r}}(\ket{1} + \omega_r^{-j}\ket{a} + \omega_r^{-2j}\ket{a^2} + \cdots + \omega_r^{-(r-1)j}\ket{a^{r-1}})\)
+								<ul>
+									<li><small class="smalltxt">
+									\(M_a\ket{\psi_j} = \omega_r^j\ket{\psi_j}
+									\)</small>
+									</li>
+									<li>
+										固有値は\(\omega_r^j\)
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>実際に固有ベクトルをどうやって作るのかはさておき…………（あとまわし）</li>
+							<li><img src="10_00.JPG"></li>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>\(M_aと\ket{\psi_1}\)をいれる。</li>
+							<li><img src="10_01.JPG"></li>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>\(\psi_1\)の固有値は\(\omega_r\)になるので、位相推定して測定すると\(\frac{1}{r}\)に近い値が高確率で得られる。</li>
+							<li>何回か測定して最頻値を取ると、\(\frac{j}{2^m}\)が得られる。（精度の話は次のスライド）</li>
+						</ul>
+					</section>
+					<section>
+						<h3>rを求めたい</h3>
+						<ul>
+							<li>\(j \in \{0,\cdots,2^m-1\} \)が測定結果</li>
+							<li>\(\frac{j}{2^m} \approx \frac{1}{r}\)だから逆数を取って四捨五入すればいい。</li>
+							<li>mが足りなかったら精度が低くてちゃんとできない。<br>\(\frac{1}{r-1},\frac{1}{r},\frac{1}{r+1}\)をちゃんと区別するには、m=2n bitくらいあればよい。
+								<ul>
+									<li>\(\frac{1}{r}と\frac{1}{r+1}\)が区別できればいいから\(\frac{1}{2}(\frac{1}{r}-\frac{1}{r+1})>\frac{1}{2N^2}\)くらい精度があればいいのでは</li>
+										<li>得られる値\(\frac{2^m}{j}と実際の値r\)の差は、m=2nのとき\(\frac{1}{2}\)未満になることが示される.</li>
+								</ul>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>\(\ket{\psi_1}\)をどうにかしたい</h3>
+						<ul>
+							<li>rが分かれば\(\ket{\psi_1}\)がわかる。（？）</li>
+							<li>発想を変えよう。</li>
+							<li>\(\frac{1}{\sqrt{r}}\sum^{r-1}_{k=0}\ket{\psi_k}=\frac{1}{r}\sum_{k=0}^{r-1}\sum_{l=0}^{r-1}\omega_r^{-kl}\ket{a^l}=\ket{a^0}=\ket{1} \)
+								<ul><li><small class="smalltxt">\(\omega^{-rl}_r-1=0\)をつかう</small></li></ul>
+							</li>
+							<li>\(\ket{1}\)をいれれば\(\ket{\psi_k}(k\in\mathbb{Z}_N)\)を一様に入れたのと同じ。</li>
+							<li>測定直前では\(\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{\phi_k}\ket{\psi_k}\)
+								<ul>
+									<li>先頭\(m\)qubitは\(\ket{\psi_k}\)での位相推定が実行済み。</li>
+									<li>\(\ket{\psi_k}(k\in\mathbb{Z}_N)\)はそれぞれ直交している(ユニタリ行列の固有ベクトルだから p48参照)</li>
+									
+								</ul>
+							</li>
+							<li>\(\ket{1}\)で位相推定をすれば、固有ベクトルをなにか入力して位相推定をするのと同じだから問題ない。つづきは§11。</li>
+						</ul>
+					</section>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+
+	</body>
+</html>

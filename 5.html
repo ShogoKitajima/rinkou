@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>輪講</title>
+
+
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			.reveal h1,
+			.reveal h2,
+			.reveal h3,
+			.reveal h4,
+			.reveal h5,
+			.reveal h6 {
+			text-transform: none;
+			}
+			/*http://mitsuakikawamorita.com/blog/?p=1599*/
+			footer{
+        clear:both;
+        font-size:20px;
+        /*color: ;*/
+        height:75px;
+        display:block;
+        position:absolute;
+        bottom:0;
+        width: 100%;
+        }
+ 		small.smalltxt{
+			 vertical-align:middle;
+		 }
+        footer div{
+        margin:0 auto;
+        text-align: center;
+        }
+		.present img{
+			max-height: 500px;
+		}
+	#sv_tbl{
+		font-size:0.8em;
+	}
+
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+$$
+\newcommand{\bra}[1]{\left\langle #1 \right|}
+\newcommand{\ket}[1]{\left|#1 \right\rangle}
+\newcommand{\bracket}[2]{\left\langle #1 \middle|#2 \right\rangle}
+
+$$
+					
+			
+				<section>
+
+					<h2>§5 ドイッチュ-ジョサのアルゴリズム(1992)<small>A simple searching algorithm; the Deutsch-Jozsa algorithm</small></h2>
+
+					<p>このページは<a href="https://cs.uwaterloo.ca/~watrous/CPSC519/LectureNotes/all.pdf">Introduction to Quantum Computing</a>の輪講のための資料です。</p>
+					<ol>
+						<li>Grover's algorithmの限定的なやつ</li>
+						<li>後半は力尽きたので作ってない。</li>
+					</ol>
+				</section>
+				<section>
+					<h3>§4の話</h3>
+					<p>ある特定の状況で量子アルゴリズムが古典的なアルゴリズムよりも優れている一例</p>
+					<p>他にもある</p>
+				</section>
+				<section>
+					<section>
+						<h3>Grover's algorithm(1996)<br><small>A simple searching problem</small></h3>
+						<p>
+							\(f:\{0,1\}^2 \longrightarrow f:\{0,1\} \) を考える
+							<br>
+							<img src="5_00.JPG" ><br>
+						</p>						
+					</section>
+					<section>
+						<p>\(f\)はなに？</p>
+						<img src="5_01.JPG">
+					</section>
+					<section>
+						<p>前回も登場した\(B_f\)</p>
+						<img src="5_02.JPG">
+					</section>
+					<section>
+						<p>最初のHadamard変換を終えた段階</p>
+						<img src="5_03.PNG">
+					</section>
+					<section>
+						<p>途中式説明のためにちょっと整理</p>
+						<p>
+						\(\displaystyle
+						(\frac{1}{2}\ket{00}+\frac{1}{2}\ket{01}+\frac{1}{2}\ket{10}+\frac{1}{2}\ket{11})(\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})\\
+						\displaystyle
+						= \sum_{k \in \{00,01,10,11\}} \frac{1}{2} \ket{k}(\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})
+						\)</p>
+						<p>ここで\(B_f\)を適用する</p>
+						<p>
+							\(
+							\displaystyle
+							\sum_{k \in \{00,01,10,11\}} \frac{1}{2}\ket{k}(\frac{1}{\sqrt{2}}\ket{0\oplus f(k)}-\frac{1}{\sqrt{2}}\ket{1\oplus f(k)})\\
+							\displaystyle
+							=\sum_{k \in \{00,01,10,11\}} \frac{1}{2}(-1)^{f(k)}\ket{k}(\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})\\
+						\)</p>
+					</section>
+					<section>
+						<p>そして,<small>\(\displaystyle(\frac{1}{2}(-1)^{f(00)}\ket{00}+\frac{1}{2}(-1)^{f(01)}\ket{01}+\frac{1}{2}(-1)^{f(10)}\ket{10}+\frac{1}{2}(-1)^{f(11)}\ket{11})(\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})\)</small>となりphase kickbackして、</p>
+						
+						<img src="5_04.JPG">
+						<p>正規直交性がある。</p>
+					</section>
+					<section>
+						<p>ユニタリ変換したい</p>
+						\(
+						U=
+							\begin{pmatrix}
+							 -\frac{1}{2} & \frac{1}{2} & \frac{1}{2} & \frac{1}{2} \\
+							 \frac{1}{2} & -\frac{1}{2} & \frac{1}{2} & \frac{1}{2} \\
+							 \frac{1}{2} & \frac{1}{2} & -\frac{1}{2} & \frac{1}{2} \\
+							 \frac{1}{2} & \frac{1}{2} & \frac{1}{2} & -\frac{1}{2} 
+							 \end{pmatrix}
+						\) 
+					</section>
+					<section>
+						<p>等価回路</p>
+						<img src="5_05.JPG">
+						<p>-1は\(\sigma_{z} = \begin{pmatrix}1&0\\0&-1\end{pmatrix}\)
+					</section>
+					<section>
+						<p>行列にすると、</p>
+						<span data-fragment-index="3" class="fragment">\((H \otimes H)\)</span>
+						<span data-fragment-index="2" class="fragment">\(\begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&-1\end{pmatrix}\)</span>
+						<span data-fragment-index="1" class="fragment">\((\sigma_{z} \otimes \sigma_{z})\)</span>
+						<span data-fragment-index="0" class="fragment">\((H \otimes H)\)</span>
+					</section>	
+				</section>
+				<section>
+					
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+
+	</body>
+</html>

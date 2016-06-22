@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>輪講</title>
+
+
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style type="text/css">
+			.reveal h1,
+			.reveal h2,
+			.reveal h3,
+			.reveal h4,
+			.reveal h5,
+			.reveal h6 {
+			text-transform: none;
+			}
+			/*http://mitsuakikawamorita.com/blog/?p=1599*/
+			footer{
+        clear:both;
+        font-size:20px;
+        /*color: ;*/
+        height:75px;
+        display:block;
+        position:absolute;
+        bottom:0;
+        width: 100%;
+        }
+ 		small.smalltxt{
+			 vertical-align:middle;
+		 }
+        footer div{
+        margin:0 auto;
+        text-align: center;
+        }
+		.present img{
+			max-height: 500px;
+		}
+	#sv_tbl{
+		font-size:0.8em;
+	}
+
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+					
+			
+				<section>
+					<h2>3.4 複素数空間と内積<br><small>Complex Spaces and Inner Products</small></h2>
+					<ul>
+						<li>
+							Shor's algorithmを使うには複素数のベクトルと行列が必要
+						</li>
+						<li>
+							転置と内積以外の定義は同じ
+						</li>
+						<li>
+							どちらも共役という演算をする
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>共役<br><small>Conjugate</small></h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\( x,y \in \mathcal{R} ,\sqrt{-1} = i \)
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							usual　\( z = x + iy \)
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							共役　　\( \overline{z} = x - iy \)
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>随伴行列<br><small>Adjoint matrix</small></h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{U}\)の随伴行列:\(\boldsymbol{V}\)
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\(\boldsymbol{V} = \boldsymbol{U}^{*} \)							
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\(\boldsymbol{V}[r,c] = \boldsymbol{\overline{U}}[c,r]\)							
+						</li>
+						<li data-fragment-index="2" class="fragment">
+							\(\boldsymbol{V} = \boldsymbol{\overline{U}}^{\mathrm{T}}=\boldsymbol{\overline{U^{\mathrm{T}}}} \)
+					</ul>
+				</section>
+				<section>
+					<a name="unitary"></a>
+					<h3>ユニタリ行列<br><small>Unitary matrix</small></h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{U}^{*}\boldsymbol{U}=\boldsymbol{I}\)
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>内積<br><small>Inner product</small></h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\displaystyle \langle\boldsymbol{a},\boldsymbol{b}\rangle = \sum^m_{k=0}\overline{\boldsymbol{a}(k)}\boldsymbol{b}(k)\)
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>実数演算との違い</h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\overline{r}\)も\(r\)も実数\(r\)と同じで、概念は実数でベクトルや行列を定義した時と同じ。
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							複素数だからといって特別な表記を作るより、実数と同様にして分かりやすくする。
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							ただし、複素数の行列やベクトルを用いた演算の僅かな場合に関しては、共役にする必要がある。
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							これらを踏まえると、次の補題3.4の証明は3.3と同様である。
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>補題3.4</h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{U}\):行列,\(\boldsymbol{a}\):ベクトル 
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{Ua}\)の長さ\(=\boldsymbol{a}\)の長さ
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>テンソル積<br><small>Tensor products</small></h3>
+					<ul>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{U}:m \times n,\boldsymbol{V}:r \times s, \boldsymbol{W}=\boldsymbol{U}\otimes\boldsymbol{V}: mr \times ns \)
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							\(\boldsymbol{c}(ij) =\boldsymbol{a}(i)\boldsymbol{b}(j) \)と同様に
+						</li>
+						<li data-fragment-index="0" class="fragment">
+							\((\boldsymbol{Wc})(ij) =(\boldsymbol{Ua})(i)(\boldsymbol{Vb})(j) \)
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\(ns\)次元のベクトル\(d\)は全て基本ベクトルの線型結合で表わせ、それぞれ積ベクトルである。
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\(\boldsymbol{Wd}\)も同様に基本ベクトルからできたものの線型結合で定義される。
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\( \boldsymbol{d} = \sum^n_{i=1}\sum^s_{j=1}d_{i,j}\boldsymbol{e}_i\otimes\boldsymbol{e}_j\)
+						</li>
+						<li data-fragment-index="1" class="fragment">
+							\( \boldsymbol{Wd} = \sum^n_{i=1}\sum^s_{j=1}d_{i,j}(\boldsymbol{Ue}_i)\otimes(\boldsymbol{Ve}_j)\)
+						</li>
+						<li data-fragment-index="2" class="fragment">
+							<small>※\(d_{i,j}\)が\(\boldsymbol{e}_i,\boldsymbol{e}_j\)と乗算可能かは問題にしない(§6.5参照)。</small>
+						</li>
+					</ul>
+				</section>
+				
+				
+				<section>
+					<h2>3.5<br><small>Matrices, Graphs, and Sums Over Paths</small></h2>
+				</section>
+				<section>
+					<h3>グラフ<br><small>Graph</small></h3>
+					<ul>
+						<li>グラフは実数行列である。</li>
+						<li>グラフGは以下で構成される。
+							<ul>
+								<li>頂点/節点V<small class="smalltxt"><b>(vertices/nodes)</b></small></li>
+								<li>Vのバイナリな関係である辺E<small class="smalltxt">(edge)</small></li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>隣接行列<br><small>Adjacency matrix</small></h3>
+					<ul>
+						<li>隣接行列\(\boldsymbol{A}=\boldsymbol{A}(G),G=(V,E)\)</li>
+						<li>\(u,v \in V\)</li>
+						<li>\(\boldsymbol{A}[u,v]\left\{\begin{array}{@{}1}1& {\rm if}(u,v) \in E\\ 0 &	 {\rm otherwise}\end{array}\right.\)</li>
+						<li>Eが対称な関係：Aは対称行列,Gは<b>無向グラフ</b></li>
+						<li>それ以外:Gは<b>有向グラフ</b></li>
+					</ul>
+				</section>
+				<section>
+					<h3>次数<br><small>Degree</small></h3>
+					<ul>
+						<li>頂点\(u\)に入射する辺の数</li>
+						<li>\(A\)のu行目の1の数に同じ</li>
+					</ul>
+				</section>
+				<section>
+					<h3>正則グラフ<br><small>Regular graph</small></h3>
+					
+					<ul style="float:left;max-width:700px;">
+						<li>正則グラフ
+							<ul>
+								<li>全ての頂点の次数が同じdである</li>
+								<li>\(\boldsymbol{A}^{\prime} = \frac{1}{d}\boldsymbol{A}\)</li>
+								<li>
+							\(\displaystyle \boldsymbol{A}^{\prime}_{G} = \frac{1}{2}\begin{bmatrix}0&1&0&1\\1&0&1&0\\0&1&0&1\\1&0&1&0\end{bmatrix}\)
+								</li>
+
+							</ul>
+						</li>
+						<li>二部グラフ(Bipartite)
+							<ul>
+								<li>
+									\(V\)を\(V_1\)内、\(V_2\)内の全ての辺がつながっている\(V_1,V_2\)に分割できる
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<canvas id="fig31" width="200px" height="250px" ></canvas>
+					
+				</section>
+				<section>
+					<h3>確率行列<br><small>Stochastic matrix</small></h3>
+					<ul>
+						<li><small class="smalltxt">\(\displaystyle \boldsymbol{A}^{\prime}_{G} = \frac{1}{2}\begin{bmatrix}0&1&0&1\\1&0&1&0\\0&1&0&1\\1&0&1&0\end{bmatrix}\)</small><small class="smalltxt fragment" data-fragment-index="1">\(\displaystyle , \boldsymbol{U}_{G} = \frac{1}{\sqrt{2}}\begin{bmatrix}0&1&0&1\\1&0&1&0\\0&1&0&-1\\1&0&-1&0\end{bmatrix}\)</small></li>
+						<li>行の値が非負で合計が１</li>
+						<li>列も同様なら二重確率行列(Double Stochastic matrix)</li>
+						<li>しかし<a href="#/4">ユニタリ行列</a>ではない
+							<ul>
+								<li>ユークリッド距離は\((\frac{1}{2})^2(1+1)=\frac{1}{2}\neq1\)</li>
+								<li>どの異なる行や列の組み合わせも直交していない</li>
+							</ul>
+						</li>
+						<li class="fragment" data-fragment-index="0">ユニタリ行列を作るために
+							<ul>
+								<li>\(\frac{1}{2}\)ではなく\(\frac{1}{\sqrt{2}}\)を使う</li>
+								<li>節点3,4間の辺を1から-1にする</li>
+							</ul>
+						</li>
+					</ul>
+				</section>	
+				<section>
+					<h4>補足<br><small></small></h4>
+					<div style="margin:0 auto;">
+					<ul >
+							
+							<li>置換行列とアダマール行列を用いて表すことができる。</li>
+							<li><small class="smalltxt">\(\displaystyle \boldsymbol{I}=\begin{bmatrix}1&0\\0&1\end{bmatrix},\boldsymbol{X}=\begin{bmatrix}0&1\\1&0\end{bmatrix},\boldsymbol{H}=\frac{1}{\sqrt{2}}\begin{bmatrix}1&1\\1&-1\end{bmatrix}\)</small></li>
+							<li><small class="smalltxt">\(\displaystyle  \boldsymbol{U}_{G} = \dfrac{1}{\sqrt{2}}\begin{bmatrix}0&1&0&1\\1&0&1&0\\0&1&0&-1\\1&0&-1&0\end{bmatrix} = \boldsymbol{H} \otimes \boldsymbol{X} \)</small></li>
+							<li>C4が奇妙な例</li>
+							<li>隣接行列が対称にユニタリ行列に変換されない正則グラフの例を次に示す</li>
+					</ul>
+
+				</section>
+				<section>
+					<h3>次数３の角柱形の正則グラフ<br><small>3-regular prism graph</small></h3>
+					<ul style="float:left;width:600px;">
+						<li><small class="smalltxt">\(\displaystyle \boldsymbol{A}^{\prime} = \frac{1}{3}\begin{bmatrix}0&1&1&0&1&0\\1&0&0&1&0&1\\1&0&0&1&1&0\\0&1&1&0&0&1\\1&0&1&0&0&1\\0&1&0&1&1&0\end{bmatrix}\)</small></li>
+						<li>1行目と3行目は5列目で内積を取ると非ゼロ
+							<ul>
+								<li>すなわち直交するような非ゼロの置換はできない</li>
+								<li><small class="smalltxt">※ユニタリ行列は直交性で定義できる</small></li>
+							</ul>
+						</li>
+					</ul>
+					<canvas id="fig32" width="300px" height="250px" ></canvas>
+					
+				</section>
+				<section>
+					<h3>隣接行列の平方<br><small>Square of an adjacency matrix</small></h3>
+					<ul>
+						<li>\(\boldsymbol{A}^2[i,j]=\sum_{k}\boldsymbol{A}[i,k]\boldsymbol{A}[k,j]\)</li>
+						<li>合計は頂点iから幾つかのkを経由してjに至る道(path)の数</li>
+						<li>\(\boldsymbol{A}^n[i,j]\)はiからjに至る長さnの道の数</li>
+				</section>
+				<section>
+					<h3>隣接行列で経路の数え上げ<br><small>path counting</small></h3>
+					<ul>
+						<li>各辺がn個の始点からm個の終点に向かうような有向グラフの隣接行列\(\boldsymbol{A}_{n,m}\)は経路の数え上げに適している。</li>
+						<li>\(\boldsymbol{U}=\boldsymbol{A}_{n,m_1}\boldsymbol{A}_{m_1,m_2}\boldsymbol{A}_{m_2,m_3}\cdots\boldsymbol{A}_{m_k,r}\)</li>
+						<ul><li><small class="smalltxt">\(m_i\)の次元数はドミノのように連なるからこの行列の積は成立する</small></li></ul>
+						<li>この行列に対応するグラフは\(\boldsymbol{A}_{m_{l-1},m_l}\)で表せるグラフ\(G_l\)の終点と\(\boldsymbol{A}_{m_{l},m_{l+1}}\)で表せるグラフ\(G_{l+1}\)の始点を同一とするグラフ</li>
+						<li>\(\boldsymbol{U}[i,j]\)は最初のグラフの始点iから最後のグラフの終点jまでの経路数
+					</ul>
+				</section>
+				<section>
+					<h3></h3>
+					<ul>
+						<li>量子コンピュータと古典概念の共通点は辺に重み付けができる点(複素数でも)</li>
+						<li>隣接行列の成分を１にすれば積の合計は道の数になる。</li>
+						<li>古典的には重みは個々の確率</li>
+						<li>量子的には重みは複素数の振幅であるが、積の合計で打ち消すだろう。</li>
+						<li>どちらにしろ、経路の数え上げがアルゴリズム的に優れている</li>
+						<li></li>
+					</ul>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+			var fig31 = document.getElementById("fig31");
+			
+			if(fig31.getContext){
+			
+				var ctx = fig31.getContext("2d");
+				ctx.globalAlpha = 1;
+				ctx.beginPath();
+				ctx.strokeStyle = "#33FFFF";
+				ctx.fillStyle = '#eeeeee';
+				var n = [[50,50],[150,50],[150,150],[50,150]];
+				var l = ["1","2","4","3"];
+				ctx.moveTo(n[0][0],n[0][1]);
+				for(var i=1;i<=3;++i){
+					ctx.lineTo(n[i][0],n[i][1]);
+				}
+				ctx.closePath();
+				ctx.stroke();
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.font = "30px 'ＭＳ Ｐゴシック'";
+				for(var i=0;i<=3;++i){
+					ctx.fillStyle = '#eeeeee';
+					ctx.beginPath();
+					ctx.arc(n[i][0],n[i][1],8,0,Math.PI*2.0,true);
+					ctx.fill();
+					ctx.fillStyle = '#dddddd';
+					ctx.fillText(l[i],n[i][0]+13,n[i][1]-25);
+				}
+				
+            
+			}
+			var fig32 = document.getElementById("fig32");
+			
+			if(fig32.getContext){
+				
+				var ctx = fig32.getContext("2d");
+				ctx.globalAlpha=1;
+				ctx.beginPath();
+				ctx.strokeStyle = "#33FFFF";
+				ctx.fillStyle = '#eeeeee';
+				var n = [[50,50],[200,50],[200,150],[50,150],[100,100],[150,100]];
+				var l = ["1","2","6","5","3","4"];
+				ctx.moveTo(n[0][0],n[0][1]);
+				for(var i=1;i<=3;++i){
+					ctx.lineTo(n[i][0],n[i][1]);
+				}
+				ctx.closePath();
+
+				ctx.stroke();
+				
+				ctx.moveTo(n[0][0],n[0][1]);
+				for(var i=4;i<=5;++i)ctx.lineTo(n[i][0],n[i][1]);
+				ctx.lineTo(n[1][0],n[1][1]);
+				ctx.closePath();
+				ctx.stroke();
+				
+				ctx.moveTo(n[3][0],n[3][1]);
+				ctx.lineTo(n[4][0],n[4][1]);
+				ctx.closePath();
+				ctx.stroke();	
+
+				ctx.moveTo(n[2][0],n[2][1]);
+				ctx.lineTo(n[5][0],n[5][1]);
+				ctx.closePath();
+				ctx.stroke();
+										
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.font = "30px 'ＭＳ Ｐゴシック'";
+				for(var i=0;i<=5;++i){
+					ctx.fillStyle = '#eeeeee';
+					ctx.beginPath();
+					ctx.arc(n[i][0],n[i][1],8,0,Math.PI*2.0,true);
+					ctx.fill();
+					ctx.fillStyle = '#dddddd';
+					ctx.fillText(l[i],n[i][0]+13,n[i][1]-25);
+				}
+			}
+		</script>
+
+	</body>
+</html>
