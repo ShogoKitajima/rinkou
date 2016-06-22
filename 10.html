@@ -62,9 +62,7 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
-		<script type="text/javascript"
-src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
@@ -284,7 +282,7 @@ $$
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-
+		<script type="text/javascript" src="js/MathJax.js"></script>
 		<script>
 
 			// Full list of configuration options available at:
@@ -307,6 +305,21 @@ $$
 					{ src: 'plugin/notes/notes.js', async: true }
 				]
 			});
+			
+			
+			
+			    // Setup MathJax
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      $(MathJax.Hub.getAllJax()).map(function(index, elem) {
+        return(elem.SourceElement());
+      }).parent().addClass('has-jax');
+    });
+    MathJax.Hub.Configured();
 		</script>
 
 	</body>
